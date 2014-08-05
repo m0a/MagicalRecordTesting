@@ -13,6 +13,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+//    [MagicalRecord setupAutoMigratingCoreDataStack];
+    NSLog(@"run application:didFinishLaunchingWithOptions");
     return YES;
 }
 							
