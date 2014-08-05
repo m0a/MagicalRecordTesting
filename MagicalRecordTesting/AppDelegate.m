@@ -12,9 +12,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-//    [MagicalRecord setupAutoMigratingCoreDataStack];
-    NSLog(@"run application:didFinishLaunchingWithOptions");
+    BOOL inTests = (NSClassFromString(@"XCTest") != nil);
+    if (inTests) {
+        return YES;
+    }
+    
+    [MagicalRecord setupAutoMigratingCoreDataStack];
+    
+    //codeによるStoryBoard読み込みと表示
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    UIViewController *initialViewController = [storyboard instantiateInitialViewController];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = initialViewController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 							
@@ -42,7 +52,13 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    BOOL inTests = (NSClassFromString(@"XCTest") != nil);
+    if (inTests) {
+        return;
+    }
+
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [MagicalRecord cleanUp];
 }
 
 @end
