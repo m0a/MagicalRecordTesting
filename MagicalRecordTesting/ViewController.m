@@ -7,8 +7,10 @@
 //
 
 #import "ViewController.h"
+#import "Sample.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *label;
 
 @end
 
@@ -18,6 +20,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    Sample* sample = [Sample MR_createEntity];
+    sample.name = @"sample";
+    [[NSManagedObjectContext MR_contextForCurrentThread] MR_saveToPersistentStoreAndWait];
+    
+    NSInteger cnt = [[Sample MR_findAll] count];
+    self.label.text = [NSString stringWithFormat:@"このアプリは起動%d回目です。",cnt];
 }
 
 - (void)didReceiveMemoryWarning
